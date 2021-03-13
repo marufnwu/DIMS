@@ -1,6 +1,4 @@
-package com.goodtogo.dims;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.sequentia.dimsePotli;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -27,7 +25,7 @@ public class WebActivity extends Activity
         myWebView.loadUrl(url);
     }
 
-    private class CustomWebViewClient extends WebViewClient implements com.goodtogo.dims.CustomWebViewClient {
+    private class CustomWebViewClient extends WebViewClient implements com.sequentia.dimsePotli.CustomWebViewClient {
         @Override
         /**
          * Take control over the loaded url so the url is open in the current Webview and not by the OS browser

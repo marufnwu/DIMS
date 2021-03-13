@@ -1,10 +1,11 @@
-package com.goodtogo.dims;
+package com.sequentia.dimsePotli;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
@@ -12,40 +13,98 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.goodtogo.dims.Models.Shop;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.sequentia.dimsePotli.Models.Shop;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity
+public class MainActivity extends AppCompatActivity
 {
-    // Images to display-----------------------//
-//    Integer[] imageIds =    {R.drawable.aliexpress,R.drawable.amazon,R.drawable.aliexpress,
-//            R.drawable.amazon,R.drawable.aliexpress,R.drawable.amazon};
+
     private Object Uri;
 
     public List<Shop> shopList = new ArrayList<>();
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle  toggle;
+    private NavigationView navView;
+    private Toolbar toolbar;
 
-    /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState); //calls the method from super class Activity
-        setContentView(R.layout.activity_main);          //sets the UI
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
+
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
+
+        builder.setShowTitle(true);
+        CustomTabsIntent customTabsIntent = builder.build();
+
+
+
         buildShopItem();
-        GridView gridView = (GridView) findViewById(R.id.gridview);// Bring gridView into context from main.xml
+        GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new ImageAdapter(this));
 
         gridView.setOnItemClickListener((OnItemClickListener) (parent, v, position, id) -> {
-            Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra("link", shopList.get(position).getUrl());
-            startActivity(intent);
-        }
-        );  //setOnItemClickListener declaration ends here.
+//            Intent intent = new Intent(this, WebActivity.class);
+//            intent.putExtra("link", shopList.get(position).getUrl());
+//            startActivity(intent);
 
-    }  //onCreate() ends here.
+            customTabsIntent.launchUrl(this, android.net.Uri.parse(shopList.get(position).getUrl()));
+        }
+        );
+
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.nav_item_share){
+                    shareApp();
+                }
+                return true;
+            }
+        });
+
+    }
+
+    private void shareApp() {
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "DIMS ePotli");
+            String shareMessage= "\nLet me recommend you this application\n\n";
+            shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            startActivity(Intent.createChooser(shareIntent, "choose one"));
+        } catch(Exception e) {
+            //e.toString();
+        }
+    }
 
     private void buildShopItem() {
 
@@ -117,8 +176,7 @@ public class MainActivity extends Activity
 
     }
 
-    public class ImageAdapter extends BaseAdapter
-    {
+    public class ImageAdapter extends BaseAdapter{
         private Context context; // Context class object - context
 
         public ImageAdapter(Context c)
@@ -142,29 +200,7 @@ public class MainActivity extends Activity
             return position;
         }
 
-        //returns an ImageView view--------------
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
-//            ImageView imageView;
-//            TextView name;
-//            if(convertView == null)
-//            {
-//                imageView = new ImageView(context);
-//                imageView.setLayoutParams(new GridView.LayoutParams(270, 270));
-//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                imageView.setPadding(10, 10, 10, 10);
-//            }
-//
-//            else
-//            {
-//                imageView = (ImageView) convertView;
-//            }
-//            imageView.setImageResource(shopList.get(position).getImgId());
-//            return imageView;
-
-
-
-
+        public View getView(int position, View convertView, ViewGroup parent){
 
             View view = LayoutInflater.from(context).inflate(R.layout.shop_item, parent, false);
 

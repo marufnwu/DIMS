@@ -1,4 +1,4 @@
-package com.goodtogo.dims.Models;
+package com.sequentia.dimsePotli.Models;
 
 public class Shop {
     public  String name, url;

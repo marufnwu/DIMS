@@ -1,4 +1,4 @@
-package com.goodtogo.dims;
+package com.sequentia.dimsePotli;
 
 import android.app.Activity;
 import android.content.Intent;

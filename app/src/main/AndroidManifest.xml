@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.goodtogo.dims" >
+    package="com.sequentia.dimsePotli" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DIMSWithActionBar" >
 
-        <activity android:name=".WebActivity" />
+        <activity android:name="com.sequentia.dimsePotli.WebActivity" />
         <activity
-            android:name=".SplashScreen"
+            android:name="com.sequentia.dimsePotli.SplashScreen"
             android:theme="@style/Theme.DIMS" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" >
+        <activity android:name="com.sequentia.dimsePotli.MainActivity" android:theme="@style/Theme.DIMS">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
