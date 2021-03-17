@@ -2,6 +2,8 @@ package com.sequentia.dimsePotli;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.sequentia.dimsePotli.Models.Shop;
@@ -59,25 +60,18 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
-
-        builder.setShowTitle(true);
-        CustomTabsIntent customTabsIntent = builder.build();
-
-
-
         buildShopItem();
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new ImageAdapter(this));
 
         gridView.setOnItemClickListener((OnItemClickListener) (parent, v, position, id) -> {
-//            Intent intent = new Intent(this, WebActivity.class);
-//            intent.putExtra("link", shopList.get(position).getUrl());
-//            startActivity(intent);
+            Intent intent = new Intent(this, WebActivity.class);
+            intent.putExtra("link", shopList.get(position).getUrl());
+            startActivity(intent);
 
-            customTabsIntent.launchUrl(this, android.net.Uri.parse(shopList.get(position).getUrl()));
-        }
+            //customTabsIntent.launchUrl(this, android.net.Uri.parse(shopList.get(position).getUrl()));
+           //openLink(shopList.get(position).getUrl());
+            }
         );
 
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -91,6 +85,7 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
+
 
     private void shareApp() {
         try {
@@ -136,9 +131,6 @@ public class MainActivity extends AppCompatActivity
         shopList.add(shop);
 
         shop = new Shop("Paytm", "https://paytm.com", R.drawable.paytm);
-        shopList.add(shop);
-
-        shop = new Shop("PhonePe", "https://www.phonepe.com", R.drawable.phone_pe);
         shopList.add(shop);
 
         shop = new Shop("Bigbasket", "https://www.bigbasket.com", R.drawable.big_basket);

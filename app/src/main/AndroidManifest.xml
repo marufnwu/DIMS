@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DIMSWithActionBar" >
 
-        <activity android:name="com.sequentia.dimsePotli.WebActivity" />
+        <activity android:name="com.sequentia.dimsePotli.WebActivity"
+            android:theme="@style/Theme.DIMS"
+            android:label="Web"
+            />
         <activity
             android:name="com.sequentia.dimsePotli.SplashScreen"
             android:theme="@style/Theme.DIMS" >
@@ -29,6 +32,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
